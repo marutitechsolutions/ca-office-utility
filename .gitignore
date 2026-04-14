@@ -1,0 +1,7 @@
+# Public Website .gitignore
+# Only used to ignore local OS files
+.DS_Store
+Thumbs.db
+node_modules/
+.vscode/
+.idea/
