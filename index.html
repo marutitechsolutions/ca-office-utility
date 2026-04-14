@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CA Office PDF Utility | Professional Automation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0c10;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --glass-blur: blur(12px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Abstract Background Elements */
+        .bg-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0) 70%);
+            z-index: -1;
+            filter: blur(50px);
+            animation: move 20s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(-20%, -20%); }
+            to { transform: translate(20%, 20%); }
+        }
+
+        header {
+            padding: 2rem;
+            text-align: center;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+        }
+
+        main {
+            width: 100%;
+            max-width: 1000px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .download-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .download-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: var(--glass-blur);
+            padding: 3rem;
+            border-radius: 24px;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+        }
+
+        .os-badge {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .main-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent-blue);
+            color: white;
+            padding: 1.25rem 2.5rem;
+            border-radius: 16px;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 600;
+            width: 100%;
+            max-width: 350px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.3);
+            margin-bottom: 1.5rem;
+        }
+
+        .main-button:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 30px -10px rgba(59, 130, 246, 0.5);
+            background: #4f46e5;
+        }
+
+        .version-info {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .feature-item {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 2rem;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .feature-item:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-item h3 {
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+
+        .feature-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .alt-os {
+            margin-top: 1rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--card-border);
+            width: 100%;
+        }
+
+        .alt-os p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .alt-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .alt-btn {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            transition: all 0.2s;
+        }
+
+        .alt-btn:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--accent-blue);
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 4rem 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--card-border);
+            width: 100%;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+
+        .contact-item {
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .contact-item:hover {
+            color: var(--accent-blue);
+        }
+
+        .nav-links {
+            margin-top: 1rem;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .nav-link {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .nav-link:hover { text-decoration: underline; }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            .download-card { padding: 2rem 1.5rem; }
+            .main-button { padding: 1rem 1.5rem; font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+    
+    <header>
+        <img src="assets/images/logo.png" alt="CA Office Logo" class="logo">
+        <h1>CA Office PDF Utility</h1>
+        <p class="subtitle">The complete financial automation suite for CAs and audit professionals.</p>
+    </header>
+
+    <main>
+        <div class="download-container">
+            <div class="download-card" id="detection-area">
+                <span class="os-badge" id="os-name">Detecting Operating System...</span>
+                <h2 id="main-title">Checking for your platform...</h2>
+                <p id="main-desc" style="margin-bottom: 2rem; color: var(--text-secondary);">Identifying the best build for you.</p>
+                
+                <a href="#" id="primary-dl" class="main-button">
+                    <span id="dl-text">Searching...</span>
+                </a>
+                
+                <div class="version-info" id="version-tag">Production Build v1.0.0</div>
+
+                <div class="alt-os">
+                    <p>Looking for another version?</p>
+                    <div class="alt-links">
+                        <a href="https://github.com/lunagariyabhavesh1991/bkl-office-utility/releases/download/latest/CA_Office_Utility_Windows.zip" class="alt-btn">Windows (.zip)</a>
+                        <a href="https://github.com/lunagariyabhavesh1991/bkl-office-utility/releases/download/latest/CA_Office_Utility_Mac.zip" class="alt-btn">MacOS (.zip)</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-item">
+                <span class="feature-icon">📊</span>
+                <h3>CMA / DPR Builder</h3>
+                <p>Generate banker-grade financial projections and reports with dynamic chart automation.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🧾</span>
+                <h3>Smart Invoice Parser</h3>
+                <p>AI-powered optical character recognition to extract invoice data into formatted Excel reports.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🖊️</span>
+                <h3>Digital Signature</h3>
+                <p>Bulk sign documents using DSC tokens with customizable stamps and secure positioning.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">⚙️</span>
+                <h3>PDF Engineering</h3>
+                <p>Merge, split, and compress utility with high-fidelity preservation of document quality.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="contact-info">
+            <a href="mailto:support.marutitechsolutions@gmail.com" class="contact-item">
+                <span>📧</span> support.marutitechsolutions@gmail.com
+            </a>
+            <a href="tel:8690086187" class="contact-item">
+                <span>📞</span> +91 8690086187
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="docs/install-guide.html" class="nav-link">Installation Guide</a>
+            <a href="https://github.com/lunagariyabhavesh1991/bkl-office-utility/releases" class="nav-link">Release Notes</a>
+        </div>
+        <p style="margin-top: 2rem;">&copy; 2026 Developed by CA Bhavesh Lunagariya</p>
+        <p style="margin-top: 0.5rem; font-size: 0.75rem;">Professional suite for Windows 10/11 and macOS.</p>
+    </footer>
+
+    <script>
+        const RELEASE_BASE = 'https://github.com/lunagariyabhavesh1991/bkl-office-utility/releases/download/latest';
+        const WIN_URL = RELEASE_BASE + '/CA_Office_Utility_Windows.zip';
+        const MAC_URL = RELEASE_BASE + '/CA_Office_Utility_Mac.zip';
+
+        function detectOS() {
+            const platform = window.navigator.platform;
+            const macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'];
+            const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+            
+            if (macosPlatforms.indexOf(platform) !== -1) return 'MacOS';
+            if (windowsPlatforms.indexOf(platform) !== -1) return 'Windows';
+            return 'Other';
+        }
+
+        const os = detectOS();
+        const osBadge = document.getElementById('os-name');
+        const mainTitle = document.getElementById('main-title');
+        const mainBtn = document.getElementById('primary-dl');
+        const dlText = document.getElementById('dl-text');
+
+        if (os === 'MacOS') {
+            osBadge.innerText = 'Application for macOS';
+            mainTitle.innerText = 'Smart Download for Mac';
+            mainBtn.href = MAC_URL;
+            dlText.innerText = 'Download for Mac (ZIP)';
+        } else if (os === 'Windows') {
+            osBadge.innerText = 'Application for Windows';
+            mainTitle.innerText = 'Smart Download for Windows';
+            mainBtn.href = WIN_URL;
+            dlText.innerText = 'Download for Windows (ZIP)';
+        } else {
+            osBadge.innerText = 'Platform Ready';
+            mainTitle.innerText = 'Download Suite';
+            mainBtn.href = '#';
+            dlText.innerText = 'Select Version Below';
+            mainBtn.style.opacity = '0.5';
+        }
+    </script>
+</body>
+</html>
