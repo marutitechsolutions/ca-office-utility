@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Release Notes — CA Office PDF Utility</title>
+    <meta name="description" content="Release notes, version history, and changelogs for CA Office PDF Utility desktop application.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #06080d;
+            --bg-secondary: #0c1018;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.1);
+            --accent-primary: #3b82f6;
+            --accent-primary-glow: rgba(59, 130, 246, 0.15);
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-tertiary: #64748b;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; line-height: 1.2; }
+
+        a { text-decoration: none; color: inherit; }
+
+        .bg-grid {
+            position: fixed; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: -3; pointer-events: none;
+        }
+
+        .bg-radial {
+            position: fixed; top: -200px; right: -200px;
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%);
+            z-index: -2; pointer-events: none;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 0 24px; height: 72px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(6, 8, 13, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .navbar-inner {
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1200px; width: 100%;
+        }
+
+        .navbar-brand { display: flex; align-items: center; gap: 12px; }
+        .navbar-logo { width: 36px; height: 36px; border-radius: 8px; filter: drop-shadow(0 0 8px rgba(59,130,246,0.3)); }
+        .navbar-brand-text { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.1rem; }
+        .navbar-brand-text span { color: var(--accent-primary); }
+
+        .navbar-back {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 0.875rem; font-weight: 500; color: var(--text-secondary);
+            padding: 8px 16px; border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            transition: var(--transition-smooth);
+        }
+        .navbar-back:hover { color: var(--text-primary); border-color: var(--accent-primary); }
+        .navbar-back svg { width: 16px; height: 16px; }
+
+        /* Container */
+        .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+        /* Page Header */
+        .page-header {
+            padding: 120px 0 60px;
+            text-align: center;
+        }
+
+        .page-label {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--accent-primary);
+            margin-bottom: 16px; padding: 6px 16px;
+            background: var(--accent-primary-glow);
+            border: 1px solid rgba(59,130,246,0.15);
+            border-radius: 100px;
+        }
+
+        .page-title {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 700; margin-bottom: 16px;
+        }
+
+        .page-subtitle {
+            font-size: 1.05rem; color: var(--text-secondary);
+            max-width: 560px; margin: 0 auto; line-height: 1.7;
+        }
+
+        /* Release Cards */
+        .releases-list {
+            display: flex; flex-direction: column; gap: 32px;
+            padding-bottom: 80px;
+        }
+
+        .release-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-xl);
+            padding: 36px;
+            position: relative; overflow: hidden;
+        }
+
+        .release-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+        }
+
+        .release-card.latest {
+            box-shadow: 0 0 40px rgba(59,130,246,0.06);
+        }
+
+        .release-header {
+            display: flex; align-items: flex-start; justify-content: space-between;
+            margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+        }
+
+        .release-version-area {
+            display: flex; align-items: center; gap: 12px;
+        }
+
+        .release-version {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem; font-weight: 700;
+        }
+
+        .release-tag {
+            font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.06em; padding: 4px 12px;
+            border-radius: 100px;
+        }
+
+        .release-tag.latest-tag {
+            color: var(--accent-emerald);
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.15);
+        }
+
+        .release-tag.stable-tag {
+            color: var(--accent-primary);
+            background: var(--accent-primary-glow);
+            border: 1px solid rgba(59,130,246,0.15);
+        }
+
+        .release-date {
+            font-size: 0.85rem; color: var(--text-tertiary);
+            display: flex; align-items: center; gap: 6px;
+            margin-top: 8px;
+        }
+
+        .release-date svg { width: 14px; height: 14px; }
+
+        .release-description {
+            font-size: 0.95rem; color: var(--text-secondary);
+            margin-bottom: 24px; line-height: 1.7;
+        }
+
+        .release-section-title {
+            font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--text-tertiary);
+            margin-bottom: 12px; margin-top: 20px;
+        }
+
+        .changelog-list {
+            list-style: none; display: flex; flex-direction: column; gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .changelog-list li {
+            display: flex; align-items: flex-start; gap: 10px;
+            font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.015);
+            border-radius: 8px;
+        }
+
+        .cl-icon {
+            width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 4px; font-size: 0.7rem;
+        }
+
+        .cl-icon.new { background: rgba(16,185,129,0.15); color: var(--accent-emerald); }
+        .cl-icon.improved { background: rgba(59,130,246,0.15); color: var(--accent-primary); }
+        .cl-icon.fixed { background: rgba(245,158,11,0.15); color: var(--accent-amber); }
+
+        /* Download assets */
+        .release-assets {
+            display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px;
+            padding-top: 24px; border-top: 1px solid var(--border-subtle);
+        }
+
+        .asset-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 20px; border-radius: var(--radius-md);
+            font-size: 0.85rem; font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+
+        .asset-btn.primary {
+            background: var(--accent-primary); color: #fff;
+            box-shadow: 0 4px 12px rgba(59,130,246,0.25);
+        }
+        .asset-btn.primary:hover {
+            background: #2563eb; transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(59,130,246,0.35);
+        }
+
+        .asset-btn.secondary {
+            background: transparent; color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+        }
+        .asset-btn.secondary:hover {
+            border-color: var(--border-medium); color: var(--text-primary);
+        }
+
+        .asset-btn svg { width: 16px; height: 16px; }
+
+        .asset-meta {
+            font-size: 0.75rem; color: var(--text-tertiary);
+            margin-top: 12px; display: flex; gap: 16px; flex-wrap: wrap;
+        }
+
+        .asset-meta span {
+            display: flex; align-items: center; gap: 4px;
+        }
+
+        /* Footer mini */
+        .mini-footer {
+            padding: 32px 0; border-top: 1px solid var(--border-subtle);
+            text-align: center; font-size: 0.8rem; color: var(--text-tertiary);
+        }
+
+        .mini-footer a {
+            color: var(--accent-primary);
+            transition: var(--transition-smooth);
+        }
+        .mini-footer a:hover { color: #60a5fa; }
+
+        @media (max-width: 768px) {
+            .release-card { padding: 24px; }
+            .release-header { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-radial"></div>
+
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/logo.png" alt="CA Office PDF Utility" class="navbar-logo">
+                <span class="navbar-brand-text">CA Office <span>PDF Utility</span></span>
+            </a>
+            <a href="index.html" class="navbar-back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                Back to Home
+            </a>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <div class="page-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Version History
+            </div>
+            <h1 class="page-title">Release Notes</h1>
+            <p class="page-subtitle">Complete changelog and version history for CA Office PDF Utility. Track every update, improvement, and new feature.</p>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="releases-list">
+                
+                <!-- Latest Release v1.1.2 -->
+                <div class="release-card latest">
+                    <div class="release-header">
+                        <div>
+                            <div class="release-version-area">
+                                <span class="release-version">v1.1.2</span>
+                                <span class="release-tag latest-tag">Latest Update</span>
+                                <span class="release-tag stable-tag">Stability & UI Patch</span>
+                            </div>
+                            <div class="release-date">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                April 17, 2026
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="release-description">Final stability patch resolving all known "Error Loading Module" crashes and enhancing calculation logic for the CMA / DPR suite.</p>
+
+                    <div class="release-section-title">Critical Stability Fixes</div>
+                    <ul class="changelog-list">
+                        <li>
+                            <span class="cl-icon fixed">✓</span>
+                            <span><strong>CMA Module Stabilization</strong> — Resolved the "Error Loading Module" crash by patching internal indentation and name reference errors in the Projections tab.</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon fixed">✓</span>
+                            <span><strong>Calculation Engine Hardening</strong> — Implemented universal `_safe_div` guards to prevent math-induced crashes when processing zero-revenue or incomplete financial records.</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon improved">↑</span>
+                            <span><strong>Theme Integrity</strong> — Fixed a specific crash in the Office License Server view caused by a mismatch in theme attribute naming.</span>
+                        </li>
+                    </ul>
+
+                    <div class="release-section-title">LAN Networking Improvements</div>
+                    <ul class="changelog-list">
+                        <li>
+                            <span class="cl-icon improved">↑</span>
+                            <span><strong>P2P Discovery Logic</strong> — Refined the peer discovery algorithm for more reliable seat tracking on complex office LAN environments.</span>
+                        </li>
+                    </ul>
+
+                    <div class="release-assets">
+                        <a href="https://github.com/marutitechsolutions/ca-office-utility/releases/download/latest/CA_Office_Utility_Windows.zip" class="asset-btn primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Download Windows ZIP (v1.1.2)
+                        </a>
+                        <a href="https://github.com/marutitechsolutions/ca-office-utility/releases/download/latest/CA_Office_Utility_Mac.zip" class="asset-btn secondary">
+                             Download for macOS
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Previous Release v1.1.1 -->
+                <div class="release-card">
+                    <div class="release-header">
+                        <div>
+                            <div class="release-version-area">
+                                <span class="release-version">v1.1.1</span>
+                                <span class="release-tag stable-tag">Security & Logic Fix</span>
+                            </div>
+                            <div class="release-date">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                April 17, 2026
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="release-description">Critical stability update fixing CMA report generation crashes and introducing a decentralized Peer-to-Peer (P2P) licensing system for improved LAN reliability.</p>
+
+                    <div class="release-section-title">CMA / DPR Builder Fixes</div>
+                    <ul class="changelog-list">
+                        <li>
+                            <span class="cl-icon fixed">✓</span>
+                            <span><strong>Report Generation Crash</strong> — Fixed `AttributeError: provisions` when generating Word/PDF reports for projects with historical audited data.</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon improved">↑</span>
+                            <span><strong>Robust Attribute Access</strong> — Legacy project files now load safely with enhanced fallback logic for audited financial fields.</span>
+                        </li>
+                    </ul>
+
+                    <div class="release-section-title">New Licensing Architecture</div>
+                    <ul class="changelog-list">
+                        <li>
+                            <span class="cl-icon new">✦</span>
+                            <span><strong>P2P Floating Seats</strong> — Introduced a decentralized Peer-to-Peer licensing model. Any PC on the LAN can now host seat tracking independently.</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon improved">↑</span>
+                            <span><strong>No Server Needed</strong> — Restricted licensing functions no longer require a specific "Server" PC to be started first.</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon improved">↑</span>
+                            <span><strong>Network Seat Insights</strong> — New "Office License Server" view showing real-time shared seat usage across all network peers.</span>
+                        </li>
+                    </ul>
+
+                    <div class="release-assets">
+                        <a href="https://github.com/marutitechsolutions/ca-office-utility/releases/download/latest/CA_Office_Utility_Windows.zip" class="asset-btn primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Download Windows ZIP (v1.1.1)
+                        </a>
+                        <a href="https://github.com/marutitechsolutions/ca-office-utility/releases/download/latest/CA_Office_Utility_Mac.zip" class="asset-btn secondary">
+                             Download for macOS
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Previous Release v1.1.0 -->
+                <div class="release-card">
+                    <div class="release-header">
+                        <div>
+                            <div class="release-version-area">
+                                <span class="release-version">v1.1.0</span>
+                                <span class="release-tag stable-tag">Pro Build</span>
+                            </div>
+                            <div class="release-date">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                April 16, 2026
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="release-description">A major financial logic update for the CMA / DPR Builder, adding granular support for diverse loan types and high-precision audit reconciliation tools.</p>
+
+                    <div class="release-section-title">CMA / DPR Builder Updates</div>
+                    <ul class="changelog-list">
+                        <li>
+                            <span class="cl-icon new">✦</span>
+                            <span><strong>Granular Loan Support</strong> — Added specific tracking and reporting for **Bank OD** (Overdraft) and **Unsecured Loans** across all financial schedules.</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon new">✦</span>
+                            <span><strong>Investments Extraction</strong> — Enhanced extraction engine to accurately identify and categorize client investments from diverse audit formats.</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon improved">↑</span>
+                            <span><strong>Real-time Tally Reconciliation</strong> — New dashboard engine that automatically reconciles Balance Sheet totals, handling negative residuals and audit adjustments instantly.</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon fixed">✓</span>
+                            <span><strong>Financial Narrative Sync</strong> — Fixed discrepancies in Section M of the generated Word reports to ensure historical Bank OD and Term Loan data matches audited entries.</span>
+                        </li>
+                    </ul>
+
+                    <div class="release-section-title">Core Improvements</div>
+                    <ul class="changelog-list">
+                        <li>
+                            <span class="cl-icon improved">↑</span>
+                            <span>Enhanced numeric regex parsing to support triple-character accounting prefixes like `(-)` for negative values.</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon improved">↑</span>
+                            <span>Improved dashboard responsiveness during large financial data entry.</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon fixed">✓</span>
+                            <span>Fixed UI bug where reconciliation labels were not resetting between fresh document parses.</span>
+                        </li>
+                    </ul>
+
+                    <div class="release-assets">
+                        <a href="https://github.com/marutitechsolutions/ca-office-utility/releases/download/latest/CA_Office_Utility_Windows.zip" class="asset-btn primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Download Windows ZIP (v1.1.0)
+                        </a>
+                        <a href="https://github.com/marutitechsolutions/ca-office-utility/releases/download/latest/CA_Office_Utility_Mac.zip" class="asset-btn secondary">
+                             Download for macOS
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Previous Release v1.0.0 -->
+                <div class="release-card">
+                    <div class="release-header">
+                        <div>
+                            <div class="release-version-area">
+                                <span class="release-version">v1.0.0</span>
+                                <span class="release-tag stable-tag">Stable</span>
+                            </div>
+                            <div class="release-date">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                April 14, 2026
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="release-description">First production release of CA Office PDF Utility — a secure, offline desktop automation suite built for Chartered Accountants, tax consultants, and audit professionals.</p>
+
+                    <div class="release-section-title">Core Modules Included</div>
+                    <ul class="changelog-list">
+                        <li>
+                            <span class="cl-icon new">✦</span>
+                            <span><strong>PDF Engineering</strong> — Merge, split, reorder, compress, delete pages, add password protection, and manage PDFs with high-fidelity document preservation.</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon new">✦</span>
+                            <span><strong>Smart Invoice Parser</strong> — AI/OCR-powered extraction of invoice numbers, dates, GSTIN, tax values, and totals into structured Excel reports. Handles diverse invoice formats.</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon new">✦</span>
+                            <span><strong>CMA / DPR Builder</strong> — Generate banker-ready CMA Data and Detailed Project Reports with financial projections, schedules, ratio analysis, and professional formatting.</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon new">✦</span>
+                            <span><strong>Digital Signature</strong> — Bulk document signing using DSC tokens with configurable stamp positioning, visual signature placement, and secure batch workflow.</span>
+                        </li>
+                    </ul>
+
+                    <div class="release-section-title">Key Features</div>
+                    <ul class="changelog-list">
+                        <li>
+                            <span class="cl-icon improved">↑</span>
+                            <span>100% offline processing — no files uploaded to any server</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon improved">↑</span>
+                            <span>Professional dark-themed desktop interface built with modern UI framework</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon improved">↑</span>
+                            <span>Windows 10 and Windows 11 compatible</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon improved">↑</span>
+                            <span>Secure local installation — no admin rights required</span>
+                        </li>
+                        <li>
+                            <span class="cl-icon improved">↑</span>
+                            <span>Optimized for daily CA office document workflows</span>
+                        </li>
+                    </ul>
+
+                    <div class="release-assets">
+                        <a href="https://github.com/marutitechsolutions/ca-office-utility/releases/download/latest/CA_Office_Utility_Windows.zip" class="asset-btn primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Download Windows ZIP
+                        </a>
+                        <a href="docs/install-guide.html" class="asset-btn secondary">
+                            Installation Guide
+                        </a>
+                    </div>
+                    <div class="asset-meta">
+                        <span>📦 CA_Office_Utility_Windows.zip</span>
+                        <span>💻 Windows 10 / 11</span>
+                        <span>📐 ~137 MB</span>
+                        <span>🔒 Secure Production Build</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="mini-footer">
+        <div class="container">
+            <p>&copy; 2026 CA Office PDF Utility. Developed by CA Bhavesh Lunagariya.</p>
+            <p style="margin-top: 8px;"><a href="index.html">← Back to Home</a></p>
+        </div>
+    </footer>
+</body>
+</html>
