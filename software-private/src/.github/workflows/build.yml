@@ -27,10 +27,22 @@ jobs:
         run: |
           python build_secure.py
           
-      - name: Upload to Public Repository
+      - name: Verify Build Artifact
         run: |
           ls -R dist/
-          gh release upload v1.1.2 dist/CA_Office_PDF_Utility_v1.1.2.zip --repo marutitechsolutions/ca-office-utility --clobber || gh release create v1.1.2 dist/CA_Office_PDF_Utility_v1.1.2.zip --repo marutitechsolutions/ca-office-utility --title "v1.1.2 Release" --notes "Latest working build sync."
+          if [ ! -f dist/CA_Office_PDF_Utility_v1.1.2.zip ]; then
+            echo "Error: Build artifact not found!"
+            exit 1
+          fi
+        shell: bash
+
+      - name: Upload to Public Repository
+        if: success()
+        run: |
+          echo "Starting upload to marutitechsolutions/ca-office-utility..."
+          # Try upload first, then fallback to create if missing
+          gh release upload v1.1.2 dist/CA_Office_PDF_Utility_v1.1.2.zip --repo marutitechsolutions/ca-office-utility --clobber || \
+          gh release create v1.1.2 dist/CA_Office_PDF_Utility_v1.1.2.zip --repo marutitechsolutions/ca-office-utility --title "v1.1.2 Production Release" --notes "Official stabilized build."
         env:
           GH_TOKEN: ${{ secrets.REPO_SYNC_TOKEN }}
 
@@ -55,9 +67,19 @@ jobs:
         run: |
           python build_secure.py
           
-      - name: Upload to Public Repository
+      - name: Verify Build Artifact (Mac)
         run: |
           ls -R dist/
-          gh release upload v1.1.2 dist/CA_Office_PDF_Utility_v1.1.2.zip --repo marutitechsolutions/ca-office-utility --clobber || gh release create v1.1.2 dist/CA_Office_PDF_Utility_v1.1.2.zip --repo marutitechsolutions/ca-office-utility --title "v1.1.2 Release" --notes "Latest working build sync (Mac)."
+          if [ ! -f dist/CA_Office_PDF_Utility_v1.1.2.zip ]; then
+            echo "Error: Build artifact not found!"
+            exit 1
+          fi
+
+      - name: Upload to Public Repository (Mac)
+        if: success()
+        run: |
+          echo "Starting upload (Mac) to marutitechsolutions/ca-office-utility..."
+          gh release upload v1.1.2 dist/CA_Office_PDF_Utility_v1.1.2.zip --repo marutitechsolutions/ca-office-utility --clobber || \
+          gh release create v1.1.2 dist/CA_Office_PDF_Utility_v1.1.2.zip --repo marutitechsolutions/ca-office-utility --title "v1.1.2 Production Release" --notes "Official stabilized build (macOS)."
         env:
           GH_TOKEN: ${{ secrets.REPO_SYNC_TOKEN }}
