@@ -36,6 +36,20 @@ jobs:
           fi
         shell: bash
 
+      - name: Authenticate GitHub CLI
+        if: success()
+        shell: pwsh
+        run: |
+          if (-not $env:TOKEN -or $env:TOKEN -eq "") {
+            Write-Error "CRITICAL: PUBLIC_REPO_TOKEN is empty or not set in repository secrets!"
+            exit 1
+          }
+          Write-Host "Logging into GitHub CLI..."
+          $env:TOKEN | gh auth login --with-token
+          gh auth status
+        env:
+          TOKEN: ${{ secrets.PUBLIC_REPO_TOKEN }}
+
       - name: Verify Build Artifact
         run: |
           Write-Host "Verifying dist contents..."
@@ -57,17 +71,14 @@ jobs:
           $TAG = "v1.1.2"
           $ZIP_FILE = "dist/CA_Office_PDF_Utility_v1.1.2.zip"
           
-          Write-Host "--- AUTHENTICATION CHECK ---"
-          gh auth status
-          
           Write-Host "--- RELEASE METADATA ---"
           Write-Host "Target Repository: $REPO"
           Write-Host "Target Tag: $TAG"
           Write-Host "Asset Path: $(Get-Item $ZIP_FILE | Select-Object -ExpandProperty FullName)"
           
           Write-Host "--- UPLOAD PROCESS ---"
-          # Try upload, fallback to create
-          $err = gh release upload $TAG $ZIP_FILE --repo $REPO --clobber 2>&1
+          # Atomic single-line commands are more robust in GH actions shells
+          gh release upload $TAG $ZIP_FILE --repo $REPO --clobber
           if ($LASTEXITCODE -ne 0) {
             Write-Host "Upload failed or release missing. Attempting to create release..."
             gh release create $TAG $ZIP_FILE --repo $REPO --title "$TAG Production Release" --notes "Official stabilized build sync."
@@ -104,15 +115,25 @@ jobs:
             exit 1
           fi
 
+      - name: Authenticate GitHub CLI (Mac)
+        if: success()
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "CRITICAL: PUBLIC_REPO_TOKEN is empty or not set in repository secrets!"
+            exit 1
+          fi
+          echo "Logging into GitHub CLI (Mac)..."
+          echo "$TOKEN" | gh auth login --with-token
+          gh auth status
+        env:
+          TOKEN: ${{ secrets.PUBLIC_REPO_TOKEN }}
+
       - name: Upload to Public Repository (Mac)
         if: success()
         run: |
           REPO="marutitechsolutions/ca-office-utility"
           TAG="v1.1.2"
           ZIP_FILE="dist/CA_Office_PDF_Utility_v1.1.2.zip"
-          
-          echo "--- AUTHENTICATION CHECK (MAC) ---"
-          gh auth status
           
           echo "--- RELEASE METADATA ---"
           echo "Target Repository: $REPO"
