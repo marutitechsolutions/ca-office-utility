@@ -178,8 +178,9 @@ def main():
         shutil.move(final_output, dest_path)
         
         # 6. Create Secure Sanitized ZIP
-        zip_name = f"CA_Office_PDF_Utility_{version}.zip"
-        if is_standard: zip_name = f"BKL_Office_Standard_{version}.zip"
+        platform_suffix = "Windows" if os.name == 'nt' else "macOS"
+        zip_name = f"CA_Office_Utility_{platform_suffix}_{version}.zip"
+        if is_standard: zip_name = f"BKL_Office_Standard_{platform_suffix}_{version}.zip"
         
         zip_path = os.path.join(dist_dir, zip_name)
         create_secure_zip(dest_path, zip_path)
