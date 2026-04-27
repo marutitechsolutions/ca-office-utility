@@ -786,16 +786,19 @@ class CmaDprBuilderView(ctk.CTkFrame):
             # Adjust grid for the new field
             if key == "cash_credit_amount":
                 r, c = 4, 2
-                ctk.CTkLabel(loan_fr, text=label, font=_BODY_FONT(11)).grid(row=r, column=c, padx=(15, 5), pady=5)
+                # Group label and button in a horizontal frame to prevent overlap in the same grid cell
+                lb_btn_fr = ctk.CTkFrame(loan_fr, fg_color="transparent")
+                lb_btn_fr.grid(row=r, column=c, sticky="e", padx=(15, 5))
+                
+                ctk.CTkLabel(lb_btn_fr, text=label, font=_BODY_FONT(11)).pack(side="left")
+                ctk.CTkButton(lb_btn_fr, text="Copy from Req.", width=80, height=24, corner_radius=4,
+                              fg_color=_ACCENT, font=_BODY_FONT(9),
+                              command=lambda e=None: self._copy_wc_req(self.loan_entries["cash_credit_amount"])).pack(side="left", padx=(8, 0))
+
                 ent = ctk.CTkEntry(loan_fr, height=32, corner_radius=6, fg_color=_BG1)
                 ent.insert(0, str(getattr(self.project.loan, key)))
-                ent.grid(row=r, column=c+1, sticky="ew", padx=(0, 5), pady=5)
+                ent.grid(row=r, column=c+1, sticky="ew", padx=(0, 15), pady=5)
                 self.loan_entries[key] = ent
-                
-                # Add a helper button for OD cases
-                ctk.CTkButton(loan_fr, text="Copy from Req.", width=80, height=24, corner_radius=4,
-                              fg_color=_ACCENT, font=_BODY_FONT(9),
-                              command=lambda e=ent: self._copy_wc_req(e)).grid(row=r, column=2, padx=5)
                 continue
 
             ctk.CTkLabel(loan_fr, text=label, font=_BODY_FONT(11)).grid(row=r, column=c, padx=(15, 5), pady=5)
